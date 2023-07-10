@@ -4,6 +4,8 @@ import adminModel from "../models/adminModel.js";
 import professorModel from "../models/professorModel.js";
 import { comparePassword, hashPassword } from './../helpers/authHelper.js';
 import JWT from 'jsonwebtoken';
+import { generateRandomNumber, isExpired } from "./randomNumberGenerate.js";
+import { transporter } from "./mailSender.js"
 
 
 //function for register Student or Professor or admin after checking perfect validation
@@ -216,7 +218,7 @@ export const loginController = async (req, res) => {
 
 
         //student
-        if(role === "Student"){
+        if (role === "Student") {
             if (!req.body.house || !req.body.col_email || !req.body.password) {
                 return res.status(404).send({
                     success: false,
@@ -225,10 +227,10 @@ export const loginController = async (req, res) => {
             }
 
             //check student
-            const user = await studentModel.findOne({col_email: req.body.col_email});
+            const user = await studentModel.findOne({ col_email: req.body.col_email });
 
             //if student not found
-            if(!user){
+            if (!user) {
                 return res.status(404).send({
                     success: false,
                     message: "Student is not registered"
@@ -237,7 +239,7 @@ export const loginController = async (req, res) => {
 
             //if password not match with database password
             const match = await comparePassword(req.body.password, user.password);
-            if(!match || user.house!=req.body.house){
+            if (!match || user.house != req.body.house) {
                 return res.status(200).send({
                     success: false,
                     message: "Invalid Password or House"
@@ -245,7 +247,7 @@ export const loginController = async (req, res) => {
             }
 
             //give token
-            const token = await JWT.sign({_id:user._id}, process.env.JWT_SECRET, {expiresIn: "1d"});
+            const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
             res.status(200).send({
                 success: true,
@@ -257,7 +259,7 @@ export const loginController = async (req, res) => {
 
 
         //admin
-        if(role === "Admin"){
+        if (role === "Admin") {
             if (!req.body.col_email || !req.body.password) {
                 return res.status(404).send({
                     success: false,
@@ -266,10 +268,10 @@ export const loginController = async (req, res) => {
             }
 
             //check admin
-            const user = await adminModel.findOne({col_email: req.body.col_email});
+            const user = await adminModel.findOne({ col_email: req.body.col_email });
 
             //if admin not found
-            if(!user){
+            if (!user) {
                 return res.status(404).send({
                     success: false,
                     message: "Admin is not registered"
@@ -278,7 +280,7 @@ export const loginController = async (req, res) => {
 
             //if password not match with database password
             const match = await comparePassword(req.body.password, user.password);
-            if(!match){
+            if (!match) {
                 return res.status(200).send({
                     success: false,
                     message: "Invalid Password"
@@ -286,7 +288,7 @@ export const loginController = async (req, res) => {
             }
 
             //give token
-            const token = await JWT.sign({_id:user._id}, process.env.JWT_SECRET, {expiresIn: "1d"});
+            const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
             res.status(200).send({
                 success: true,
@@ -298,7 +300,7 @@ export const loginController = async (req, res) => {
 
 
         //Professor
-        if(role === "Professor"){
+        if (role === "Professor") {
             if (!req.body.col_email || !req.body.password) {
                 return res.status(404).send({
                     success: false,
@@ -307,10 +309,10 @@ export const loginController = async (req, res) => {
             }
 
             //check professor
-            const user = await professorModel.findOne({col_email: req.body.col_email});
+            const user = await professorModel.findOne({ col_email: req.body.col_email });
 
             //if professor not found
-            if(!user){
+            if (!user) {
                 return res.status(404).send({
                     success: false,
                     message: "Professor is not registered"
@@ -319,7 +321,7 @@ export const loginController = async (req, res) => {
 
             //if password not match with database password
             const match = await comparePassword(req.body.password, user.password);
-            if(!match){
+            if (!match) {
                 return res.status(200).send({
                     success: false,
                     message: "Invalid Password"
@@ -327,7 +329,7 @@ export const loginController = async (req, res) => {
             }
 
             //give token
-            const token = await JWT.sign({_id:user._id}, process.env.JWT_SECRET, {expiresIn: "1d"});
+            const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
             res.status(200).send({
                 success: true,
@@ -346,6 +348,305 @@ export const loginController = async (req, res) => {
         });
     }
 };
+
+
+//forgotPasswordController
+let randNumber;
+export const forgotPasswordController = async (req, res) => {
+    try {
+        const role = req.body.role;
+        console.log(role);
+        if (!role) {
+            res.status(400).send({ message: "Role is required" });
+        }
+
+        if (role === "Student") {
+            if (!req.body.house) {
+                res.status(400).send({ message: "House of student is required" });
+            }
+            if (!req.body.col_email) {
+                res.status(400).send({ message: "College email id of student is required" });
+            }
+
+            //check Student
+            const user = await studentModel.findOne({ col_email: req.body.col_email });
+
+            //student not found
+            if (!user) {
+                return res.status(404).send({
+                    success: false,
+                    message: "Student not found"
+                });
+            }
+
+            if (user.house != req.body.house) {
+                return res.status(406).send({
+                    success: false,
+                    message: "Student's house is wrong"
+                });
+            }
+
+            const startTime = Date.now();
+            randNumber = generateRandomNumber();
+            console.log("Random Number: " + randNumber);
+
+            // Define the email options
+            const mailOptions = {
+                from: 'unims2407@gmail.com',
+                to: req.body.col_email,
+                subject: 'Reset Password OTP',
+                text: `Hello, I hope you are fine. Your reset password otp is: ${randNumber}`
+            };
+
+            // Send the email
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+
+            let exp = false;
+            //expired otp error with countdown
+            const interval = await setInterval(function () {
+                if (isExpired(startTime)) {
+                    clearInterval(interval);
+                    console.log("The OTP has expired.");
+                    exp = true;
+                }
+            }, 1000);
+
+            if (exp) {
+                res.status(404).send({
+                    success: false,
+                    message: "OTP is expired. Please try again after sometime."
+                });
+            }
+
+            const col_email = req.body.col_email;
+
+            res.status(200).send({
+                success: true,
+                message: "OTP send successfully in your college student account",
+                col_email,
+                role
+            });
+        }
+
+        if (role === "Professor") {
+            if (!req.body.col_email) {
+                res.status(400).send({ message: "College email id of professor is required" });
+            }
+
+            //check professor
+            const user = await professorModel.findOne({ col_email: req.body.col_email });
+
+            //professor not found
+            if (!user) {
+                return res.status(404).send({
+                    success: false,
+                    message: "Professor not found"
+                });
+            }
+
+            console.log(user);
+
+
+            const startTime = Date.now();
+            randNumber = generateRandomNumber();
+            console.log("Random Number: " + randNumber);
+
+            // Define the email options
+            const mailOptions = {
+                from: 'unims2407@gmail.com',
+                to: req.body.col_email,
+                subject: 'Reset Password OTP',
+                text: `Hello, I hope you are fine. Your reset password otp is: ${randNumber}`
+            };
+
+            // Send the email
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+
+            let exp = false;
+            //expired otp error with countdown
+            const interval = setInterval(function () {
+                if (isExpired(startTime)) {
+                    clearInterval(interval);
+                    console.log("The OTP has expired.");
+                    exp = true;
+                }
+            }, 1000);
+
+            if (exp) {
+                res.status(404).send({
+                    success: false,
+                    message: "OTP is expired. Please try again after sometime."
+                });
+            }
+
+            const col_email = req.body.col_email;
+
+            res.status(200).send({
+                success: true,
+                message: "OTP send successfully in yuor professor college accout",
+                col_email,
+                role
+            });
+        }
+
+        if (role === "Admin") {
+            if (!req.body.col_email) {
+                res.status(400).send({ message: "College email id of admin is required" });
+            }
+
+            //check admin
+            const user = await adminModel.findOne({ col_email: req.body.col_email });
+
+            //admin not found
+            if (!user) {
+                return res.status(404).send({
+                    success: false,
+                    message: "admin not found"
+                });
+            }
+
+            const startTime = Date.now();
+            randNumber = generateRandomNumber();
+            console.log("Random Number: " + randNumber);
+
+            // Define the email options
+            const mailOptions = {
+                from: 'unims2407@gmail.com',
+                to: req.body.col_email,
+                subject: 'Reset Password OTP',
+                text: `Hello, I hope you are fine. Your reset password otp is: ${randNumber}`
+            };
+
+            // Send the email
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+
+            let exp = false;
+            //expired otp error with countdown
+            const interval = setInterval(function () {
+                if (isExpired(startTime)) {
+                    clearInterval(interval);
+                    console.log("The OTP has expired.");
+                    exp = true;
+                }
+            }, 1000);
+
+            if (exp) {
+                res.status(404).send({
+                    success: false,
+                    message: "OTP is expired. Please try again after sometime."
+                });
+            }
+
+            const col_email = req.body.col_email;
+
+            res.status(200).send({
+                success: true,
+                message: "OTP send successfully in your admin college account",
+                col_email,
+                role
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Something went wrong",
+            error
+        })
+    }
+}
+
+
+//compareOtp
+export const otpController = (req, res) => {
+    try {
+        // console.log(randNumber);
+        // console.log("Frontend otp: " + req.body.otp);
+        if (randNumber == req.body.otp) {
+            res.status(200).send({
+                success: true,
+                message: "OTP is perfect",
+                randNumber
+            });
+        }
+        else {
+            res.status(206).send({
+                success: false,
+                message: "OTP is wrong"
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+        res.status(405).send({
+            success: false,
+            message: "Something went wrong"
+        });
+    }
+}
+
+
+//updatePasswrodController
+export const updatePasswrodController = async (req, res) => {
+    try {
+        console.log(req.body);
+
+        if (req.body.role === "Student") {
+            const hased = await hashPassword(req.body.password);
+            await studentModel.findOneAndUpdate({ col_email: req.body.col_email }, { password: hased });
+            res.status(200).send({
+                success: true,
+                message: "Student password reset successfully"
+            });
+        }
+
+        if (req.body.role === "Professor") {
+            const hased = await hashPassword(req.body.password);
+            await professorModel.findOneAndUpdate({ col_email: req.body.col_email }, { password: hased });
+            res.status(200).send({
+                success: true,
+                message: "Professor password reset successfully"
+            });
+        }
+
+        if (req.body.role === "Admin") {
+            const hased = await hashPassword(req.body.password);
+            await adminModel.findOneAndUpdate({ col_email: req.body.col_email }, { password: hased });
+            res.status(200).send({
+                success: true,
+                message: "Admin password reset successfully"
+            });
+        }
+
+    }
+    catch (error) {
+        console.log(error);
+        res.status(405).send({
+            success: false,
+            message: "Something went wrong"
+        });
+    }
+}
+
 
 
 //test testController

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import Layout from '../components/Layout/Layout'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import {NavLink, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/auth';
+
 
 
 const Sign_in = () => {
@@ -21,7 +22,7 @@ const Sign_in = () => {
         try {
             if (password.length < 6) {
                 toast.error("Please enter minimum 6 character password!");
-                navigate('/login');
+                navigate('/');
             }
             if (role === "Select your role in Hogwart School") {
                 toast.error("Please select your role in Hogwart School");
@@ -32,7 +33,6 @@ const Sign_in = () => {
                         toast.error("Please Select House of Student");
                     }
                     else {
-                        // console.log(house);
                         const res = await axios.post(`/api/v1/auth/login`,
                             { role, house, col_email, password });
 
@@ -96,14 +96,14 @@ const Sign_in = () => {
 
         } catch (error) {
             console.log(error);
-            toast.error("Something went wrong.")
+            toast.error("Something went wrong");
         }
     }
 
 
 
     return (
-        <Layout title={"Sign in-Hogwart Portal"}>
+        <Layout title={"Login-Hogwart Portal"}>
 
             <div className="px-4 py-5 my-5 text-center">
 
@@ -162,11 +162,13 @@ const Sign_in = () => {
                             <label htmlFor="floatingPassword">Password</label>
                         </div>
 
-                        <div className="col-auto mb-3">
+                        <div className="col-auto mt-3">
                             <span id="passwordHelpInline" className="form-text">
                                 Password must be in 8-20 characters long.
                             </span>
                         </div>
+
+                        <NavLink to="/forgot_password" className="icon-link m-3">Forgot Password </NavLink>
 
                         <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
                             <button onClick={handleSubmit} className="btn btn-primary btn-lg px-4 gap-3">Sign in</button>

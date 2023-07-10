@@ -21,18 +21,18 @@ export const isAdmin = async (req, res, next) => {
     try {
         console.log(req.user);
         const user = await adminModel.findById(req.user._id);
-        if(!user){
-            return res.status(401).send({
+        if (!user) {
+            return res.send({
                 success: false,
                 message: "UnAuthorized Access admin middleware"
             });
         }
-        else{
+        else {
             next();
         }
     } catch (error) {
         console.log(error);
-        res.status(401).send({
+        res.status(402).send({
             success: false,
             error,
             message: "Error in admin middleware"
@@ -46,13 +46,13 @@ export const isProfessor = async (req, res, next) => {
     try {
         console.log(req.user);
         const user = await professorModel.findById(req.user._id);
-        if(!user){
-            return res.status(401).send({
+        if (!user) {
+            return res.send({
                 success: false,
                 message: "UnAuthorized Access professor middleware"
             });
         }
-        else{
+        else {
             next();
         }
     } catch (error) {
@@ -71,13 +71,13 @@ export const isStudent = async (req, res, next) => {
     try {
         console.log(req.user);
         const user = await studentModel.findById(req.user._id);
-        if(!user){
-            return res.status(401).send({
+        if (!user) {
+            return res.send({
                 success: false,
                 message: "UnAuthorized Access in Student middelware"
             });
         }
-        else{
+        else {
             next();
         }
     } catch (error) {

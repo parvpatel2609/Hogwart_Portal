@@ -18,7 +18,7 @@ const Dashboard_Professor = () => {
             token: ""
         });
         localStorage.removeItem('auth');
-        navigate('/login');
+        navigate('/');
         toast.success("Logout Succefully");
     }
 
@@ -83,7 +83,7 @@ const Dashboard_Professor = () => {
                             </div>
                             <h3 className="fs-2 text-body-emphasis">Reset Password</h3>
                             <p>If you have to change your AURIS Password, then go ahed.</p>
-                            <NavLink href="/Reset_Password" className="icon-link" target="_blank"> More Details</NavLink>
+                            <NavLink to="/forgot_password" className="icon-link"> More Details</NavLink>
                         </div>
 
                         <div className="feature col">
