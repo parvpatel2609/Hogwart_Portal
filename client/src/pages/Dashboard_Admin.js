@@ -25,7 +25,7 @@ const Dashboard_Admin = () => {
 
 
     return (
-        <Layout title={"Admin Dashboard"}>
+        <Layout title={"Admin Dashboard-Hogwart Portal"}>
 
             <div>
                 <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">.
@@ -75,7 +75,7 @@ const Dashboard_Admin = () => {
                             </div>
                             <h3 className="fs-2 text-body-emphasis">Course Directory</h3>
                             <p>Details about all of the course which are running in Ahmedabad University and also add to new courses.</p>
-                            <NavLink to="/" className="icon-link">More Details</NavLink>
+                            <NavLink to="/course_directory" className="icon-link">More Details</NavLink>
                         </div>
 
                         <div className="feature col">
@@ -84,7 +84,7 @@ const Dashboard_Admin = () => {
                             </div>
                             <h3 className="fs-2 text-body-emphasis">Course Registration</h3>
                             <p>Course registration related all details are here. </p>
-                            <NavLink to="/" className="icon-link"> More Details</NavLink>
+                            <NavLink to="/set_registration_time" className="icon-link"> More Details</NavLink>
                         </div>
 
                         <div className="feature col">

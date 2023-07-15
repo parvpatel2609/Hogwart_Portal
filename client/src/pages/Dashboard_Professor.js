@@ -26,7 +26,7 @@ const Dashboard_Professor = () => {
 
 
     return (
-        <Layout title={"Professor Dashboard"}>
+        <Layout title={"Professor Dashboard-Hogwart Portal"}>
 
             <div>
                 <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
@@ -43,7 +43,7 @@ const Dashboard_Professor = () => {
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li className="nav-item">
-                                    <NavLink className="nav-link active" aria-current="page" to="/">Dashboard</NavLink>
+                                    <NavLink className="nav-link active" aria-current="page" to="/dashboard_professor">Dashboard</NavLink>
                                 </li>
 
                                 <li className="nav-item">
@@ -74,7 +74,7 @@ const Dashboard_Professor = () => {
                             </div>
                             <h3 className="fs-2 text-body-emphasis">Course Directory</h3>
                             <p>Details about all of the course which are running in Ahmedabad University and also add to new courses.</p>
-                            <NavLink href="/course_directory" className="icon-link">More Details</NavLink>
+                            <NavLink to="/course_directory" className="icon-link">More Details</NavLink>
                         </div>
 
                         <div className="feature col">
@@ -92,7 +92,7 @@ const Dashboard_Professor = () => {
                             </div>
                             <h3 className="fs-2 text-body-emphasis">Courses</h3>
                             <p>Details of courses which you are teaching in Ahmedabad University.</p>
-                            <NavLink href="/professor_teaching" className="icon-link"> More Details</NavLink>
+                            <NavLink to="/professor_courses" className="icon-link"> More Details</NavLink>
                         </div>
 
                     </div>
@@ -104,8 +104,8 @@ const Dashboard_Professor = () => {
                     </NavLink>
 
                     <ul className="nav col-md-4 justify-content-end">
-                        <li className="nav-item"><NavLink href="Admin_dashboard" className="nav-link px-2 text-body-secondary">Home</NavLink></li>
-                        <li className="nav-item"><NavLink href="https://ahduni.edu.in/about-ahmedabad/" className="nav-link px-2 text-body-secondary">About</NavLink></li>
+                        <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary">Home</NavLink></li>
+                        <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary">About</NavLink></li>
                     </ul>
 
                 </footer>

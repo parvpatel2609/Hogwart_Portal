@@ -52,9 +52,8 @@ export const registerController = async (req, res) => {
                 return res.status(200).send({
                     success: false,
                     message: "Student is already exist"
-                })
+                });
             }
-
 
             //register Student
             const hashedPassword = await hashPassword(req.body.password);
@@ -71,7 +70,6 @@ export const registerController = async (req, res) => {
                 password: hashedPassword
             });
             stu.save();
-
 
             //sending success response
             res.status(201).send({

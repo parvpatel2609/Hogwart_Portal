@@ -49,6 +49,5 @@ router.get("/professor-auth", requireSignIn, isProfessor, (req, res) => {
 })
 
 
-
 //export router
 export default router;

@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
+import courseRoutes from "./routes/courseRoutes.js";
+import gradeRoutes from './routes/gradeRoutes.js';
 import cors from "cors";
 
 //configure env 
@@ -25,6 +27,8 @@ app.use(morgan("dev"));
 
 //routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/course", courseRoutes);
+app.use("/api/v1/grade", gradeRoutes);
 
 
 
@@ -40,6 +44,5 @@ const PORT = process.env.PORT || 8080;
 
 //run listen 
 app.listen(PORT, () => {
-    
     console.log(`Server is running on ${process.env.DEV_MODE} mode on port ${PORT} `);
 })

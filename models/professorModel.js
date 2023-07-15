@@ -15,6 +15,7 @@ const professorSchema = new mongoose.Schema({
     name: {
         type: String,
         require: true,
+        lowercase: true
     },
     per_email: {
         type: String,

@@ -9,12 +9,13 @@ const courseSchema = new mongoose.Schema({
         require: true,
         unique: true,
     },
-    credit: {
-        type: Number,
-        require: true,
-    },
     faculty: {
         type: String,
+        require: true,
+        lowercase: true
+    },
+    credit: {
+        type: Number,
         require: true,
     },
     description: String,
