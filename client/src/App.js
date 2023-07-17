@@ -16,6 +16,7 @@ import Registration_Time from './pages/Registration_Time';
 import Registration_Closed from './pages/Registration_Closed';
 import Course_Registration from './pages/Course_Registration';
 import Professor_Courses from './pages/Professor_Courses';
+import Course_Student_Details from './pages/Course_Student_Details';
 
 
 
@@ -94,6 +95,10 @@ function App() {
         </Route>
 
 
+        //student enroll course details private route only for professor
+        <Route path='/course_student_details' element={<PrivateRoute_Professor />}>
+          <Route path="" element={<Course_Student_Details />} />
+        </Route>
 
 
 

@@ -14,6 +14,10 @@ const gradeSchema = new mongoose.Schema({
         ref: "Course",
         required: true
     },
+    count: {
+        type: Number,
+        default: 0
+    },
     students_enroll: [
         {
             student_id: {

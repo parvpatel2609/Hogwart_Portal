@@ -54,6 +54,36 @@ const Professor_Courses = () => {
   }, []);
 
 
+
+  //more details button of particilar 
+  const handleMoreDetails = async (id) => {
+    try {
+      console.log(id);
+      const { user } = JSON.parse(localStorage.getItem("auth"));
+      const col_email = user.col_email;
+      localStorage.setItem('course_id', JSON.stringify(id));
+      // console.log(col_email);
+
+
+      const res = await axios.post("/api/v1/grade/enroll_student", { col_email, id });
+
+      if (res.data.success) {
+        console.log(res.data.stu_enroll);
+        toast.success(res.data.message);  
+        navigate("/course_student_details");
+      }
+
+      else {
+        toast.error(res.data.message);
+      }
+    }
+    catch (error) {
+      console.log(error);
+      toast.error(`Something went wrong ${error}`);
+    }
+  }
+
+
   return (
     <Layout title={"Professor Courses-Hogwart Portal"}>
 
@@ -94,22 +124,23 @@ const Professor_Courses = () => {
 
         <div className="container px-4 py-5" id="featured-3">
           <h2 className="pb-2 border-bottom">Quick Links</h2>
-          
-            <div className="row g-4">
-              {course.map(co => (
-                <div className="col-sm-6 col-lg-4">
-                  {/* Card Start */}
-                  <div className="card card-body shadow p-4 h-100">
-                    <div className="icon-lg bg-primary bg-opacity-10 text-primary rounded-circle mb-4"><i className="bi bi-lightning-fill fs-5" /></div>
-                    <h5> {co.course_name} </h5>
-                    <h6> Credit: {co.credit}  </h6>
-                    <h6> Faculty: {co.faculty} </h6>
-                    <p> {co.description} </p>
-                  </div>
-                  {/* Card END */}
+
+          <div className="row g-4">
+            {course.map(co => (
+              <div className="col-sm-6 col-lg-4">
+                {/* Card Start */}
+                <div className="card card-body shadow p-4 h-100">
+                  <div className="icon-lg bg-primary bg-opacity-10 text-primary rounded-circle mb-4"><i className="bi bi-lightning-fill fs-5" /></div>
+                  <h5> {co.course_name} </h5>
+                  <h6> Credit: {co.credit}  </h6>
+                  <h6> Faculty: {co.faculty} </h6>
+                  <p> {co.description} </p>
+                  <button onClick={() => { handleMoreDetails(co._id) }} style={{ width: "fit-content" }} class="btn btn-primary">More Details</button>
                 </div>
-              ))}
-            </div>
+                {/* Card END */}
+              </div>
+            ))}
+          </div>
 
         </div>
 
@@ -130,4 +161,4 @@ const Professor_Courses = () => {
   )
 }
 
-export default Professor_Courses
+export default Professor_Courses;

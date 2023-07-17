@@ -1,14 +1,17 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Layout from '../components/Layout/Layout'
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/auth';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 const Dashboard_Professor = () => {
 
     const navigate = useNavigate();
     const [auth, setAuth] = useAuth();
+    const [registrationOpen, setRegistrationOpen] = useState(false);
+
 
     //function for handlelogout 
     const handleLogout = () => {
@@ -22,6 +25,43 @@ const Dashboard_Professor = () => {
         toast.success("Logout Succefully");
     }
 
+
+    //checking registration is open or not
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`/api/v1/course/check_registration_time_on_or_not`);
+            console.log(response);
+
+            if (response.data.d) {
+                const startTime = new Date(response.data.d.startTime);
+                const endTime = new Date(response.data.d.endTime);
+
+                // console.log("Strating date : "+startTime);
+                // console.log("Ending date : "+endTime);
+
+                const currentDateTime = new Date();
+
+                // Check if the current date and time is between the range
+                const isRegistrationOpen =
+                    currentDateTime >= startTime && currentDateTime <= endTime;
+
+                console.log(isRegistrationOpen);
+
+                setRegistrationOpen(isRegistrationOpen);
+            }
+            else {
+                console.log("Registration is closed");
+                // toast.error("Registration is closed");
+            }
+        }
+        catch (error) {
+            console.error('Error fetching date and time range:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
 
 
@@ -61,12 +101,11 @@ const Dashboard_Professor = () => {
                 </nav>
 
                 <video src="/image/Hogwart_tour.mkv" autoPlay loop muted>Hogwart Tour</video>
-                
+
 
                 <div className="container px-4 py-5" id="featured-3">
                     <h2 className="pb-2 border-bottom">Quick Links</h2>
                     <div className="row g-4 py-5 row-cols-1 row-cols-lg-3">
-
 
                         <div className="feature col">
                             <div className="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
@@ -86,15 +125,23 @@ const Dashboard_Professor = () => {
                             <NavLink to="/forgot_password" className="icon-link"> More Details</NavLink>
                         </div>
 
-                        <div className="feature col">
-                            <div className="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-                                <img src="image/allRights.png" alt="All writes" className="feature_au" />
-                            </div>
-                            <h3 className="fs-2 text-body-emphasis">Courses</h3>
-                            <p>Details of courses which you are teaching in Ahmedabad University.</p>
-                            <NavLink to="/professor_courses" className="icon-link"> More Details</NavLink>
-                        </div>
-
+                        {registrationOpen === true ?
+                            (
+                                <div>
+                                </div>
+                            ) :
+                            (
+                                <div>
+                                    <div className="feature col">
+                                        <div className="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+                                            <img src="image/allRights.png" alt="All writes" className="feature_au" />
+                                        </div>
+                                        <h3 className="fs-2 text-body-emphasis">Courses</h3>
+                                        <p>Details of courses which you are teaching in Ahmedabad University.</p>
+                                        <NavLink to="/professor_courses" className="icon-link"> More Details</NavLink>
+                                    </div>
+                                </div>
+                            )}
                     </div>
                 </div>
 

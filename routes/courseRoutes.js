@@ -1,6 +1,6 @@
 import express from "express";
 import { addcourseController, getcourseRegistrationController, deleteCourseController, getCourseController, getRegistrationTimeController, registrationtimeController, addNewCourseStudentRegisterController } from "../controller/courseController.js";
-import { isAdmin, isStudent, requireSignIn } from "../middlewares/authMiddleware.js";
+import { isAdmin, isProfessor, isStudent, requireSignIn } from "../middlewares/authMiddleware.js";
 
 
 //route object
@@ -22,7 +22,8 @@ router.delete("/delete_course/:id", requireSignIn, isAdmin, deleteCourseControll
 //Registration time where it is start and end
 router.post("/registration_time", requireSignIn, isAdmin, registrationtimeController);
 
-
+//registration get method for is it start or not 
+router.get("/check_registration_time_on_or_not",requireSignIn, isProfessor, getRegistrationTimeController);
 
 //registration get method for is it start or not 
 router.get("/check_registration_time",requireSignIn, isStudent, getRegistrationTimeController);

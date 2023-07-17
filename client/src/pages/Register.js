@@ -35,7 +35,7 @@ const Register = () => {
 
           if (res.data.success) {
             toast.success(res.data.message);
-            navigate('/');
+            navigate('/dashboard_admin');
           }
           else {
             toast.error(res.data.message);
@@ -48,7 +48,7 @@ const Register = () => {
 
           if (res.data.success) {
             toast.success(res.data.message);
-            navigate('/');
+            navigate('/dashboard_admin');
           }
           else {
             toast.error(res.data.message);
@@ -61,7 +61,7 @@ const Register = () => {
 
           if (res.data.success) {
             toast.success(res.data.message);
-            navigate('/');
+            navigate('/dashboard_admin');
           }
           else {
             toast.error(res.data.message);

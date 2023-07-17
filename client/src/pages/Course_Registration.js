@@ -35,7 +35,7 @@ const Course_Registration = () => {
     const fetchData = async () => {
         try {
             const response = await axios.get(`/api/v1/course/check_registration_time`);
-            // console.log(response);
+            console.log(response);
 
             if (response.data.d) {
                 const startTime = new Date(response.data.d.startTime);
@@ -118,7 +118,7 @@ const Course_Registration = () => {
             console.log(id);
             const { user } = JSON.parse(localStorage.getItem("auth"));
             const col_email = user.col_email;
-            console.log(col_email);
+            // console.log(col_email);
 
             const res = await axios.post(`/api/v1/course/add_course_student_register`, { col_email, id });
 
@@ -136,8 +136,6 @@ const Course_Registration = () => {
             toast.error(`Something went wrong`);
         }
     }
-
-
 
 
     return (
@@ -236,8 +234,15 @@ const Course_Registration = () => {
 
                 </Layout>
             ) : (
-                <div>
-                </div>
+                <Layout title={"Registration Closed-Hogwart Portal"}>
+                    <div className="px-4 py-5 my-5 text-center">
+                        <a id="logo"><img src="/image/hogwart_school_logo.png" alt="Hogwarts School Logo" /></a>
+                        <h3 className="display-5 fw-bold text-body-emphasis">404 Error</h3>
+                        <div className="col-lg-6 mx-auto alert-danger alert">
+                            <p className="lead mb-4 " /><h4>Registration is closed</h4><p />
+                        </div>
+                    </div>
+                </Layout>
             )}
 
         </Layout>
