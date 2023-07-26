@@ -17,6 +17,14 @@ import Registration_Closed from './pages/Registration_Closed';
 import Course_Registration from './pages/Course_Registration';
 import Professor_Courses from './pages/Professor_Courses';
 import Course_Student_Details from './pages/Course_Student_Details';
+import Update_Attendence from './pages/Update_Attendence';
+import Update_Marks from './pages/Update_Marks';
+import Student_courses from './pages/Student_courses';
+import Attendance_Marks from './pages/Attendance_Marks';
+import Event from './pages/Event';
+import Add_New_Event from './pages/Add_New_Event';
+import Delete_Event from './pages/Delete_Event';
+import Event_Participate_Details from './pages/Event_Participate_Details';
 
 
 
@@ -101,10 +109,49 @@ function App() {
         </Route>
 
 
+        //updating attendence private route of Professor
+        <Route path='/update_attendence' element={<PrivateRoute_Professor />}>
+          <Route path="" element={<Update_Attendence />} />
+        </Route>
+
+
+        //updating marks private route of Professor
+        <Route path='/update_marks' element={<PrivateRoute_Professor />}>
+          <Route path="" element={<Update_Marks />} />
+        </Route>
+
+        //Student courses private route of student
+        <Route path='/student_courses' element={<PrivateRoute_Student />}>
+          <Route path="" element={<Student_courses />} />
+        </Route>
+
+        //Student course attendance & marks private route of student
+        <Route path='/student_course_attendance_marks' element={<PrivateRoute_Student />}>
+          <Route path="" element={<Attendance_Marks />} />
+        </Route>
+
 
         // Page not found Route
         <Route path='/registration_closed' element={<Registration_Closed />} />
 
+
+        //events routes
+        <Route path='/event' element={<Event />} />
+
+        //add new event only through admin
+        <Route path='/add_new_event' element={<PrivateRoute_Admin/>}>
+          <Route path="" element={<Add_New_Event />} />
+        </Route>
+
+        //delete evemt only through admin
+        <Route path='/delete_event' element={<PrivateRoute_Admin/>}>
+          <Route path="" element={<Delete_Event />} />
+        </Route>
+
+        //evemt participate details only through admin
+        <Route path='/event_participate_details' element={<PrivateRoute_Admin/>}>
+          <Route path="" element={<Event_Participate_Details />} />
+        </Route>
 
         // Page not found Route
         <Route path='*' element={<Pagenotfound />} />

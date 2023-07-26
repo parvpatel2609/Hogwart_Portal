@@ -1,18 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Layout from '../components/Layout/Layout'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/auth';
-import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
 
-
-
-const Dashboard_Student = () => {
-
-  const navigate = useNavigate();
+const Attendance_Marks = () => {
 
   const [auth, setAuth] = useAuth();
+  const navigate = useNavigate();
 
+  const [studentPerformence, setstudentPerformence] = useState({ courseName: "", marks: "", attendance: "" });
 
   //function for handlelogout 
   const handleLogout = () => {
@@ -26,15 +25,43 @@ const Dashboard_Student = () => {
     toast.success("Logout Succefully");
   }
 
-  return (
-    <Layout title={"Student Dashboard-Hogwart Portal"}>
+  const getAttendance_Marks = async () => {
+    try {
+      const { user } = JSON.parse(localStorage.getItem("auth"));
+      const id = user._id;
 
+      const course_id = JSON.parse(localStorage.getItem("stu_course_id"));
+
+      const res = await axios.post("/api/v1/grade/get_student_attendance_marks", { id, course_id });
+
+      if (res.data) {
+        // console.log(res.data.attendance_marks);
+        setstudentPerformence({
+          courseName: res.data.attendance_marks.course_id.course_name,
+          marks: res.data.attendance_marks.students_enroll[0].marks,
+          attendance: res.data.attendance_marks.students_enroll[0].Attendence
+        });
+      }
+    }
+    catch (error) {
+      console.log(error);
+      toast.error("Something went wrong in getting student attendance & marks of course");
+    }
+  }
+
+  useEffect(() => {
+    getAttendance_Marks();
+  }, []);
+
+
+  return (
+    <Layout title={"Student Attendance & Marks"}>
+      // <h1> {studentPerformence.marks} </h1>
       <div>
         <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
 
           <div className="container-fluid">
-
-            <NavLink className="navbar-brand" id="logo">
+            <NavLink className="navbar-brand" id="logo" to="/">
               <img src="/image/hogwart_school_logo.png" alt="Hogwart School Logo" />
             </NavLink>
 
@@ -46,7 +73,7 @@ const Dashboard_Student = () => {
 
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <NavLink className="nav-link active" to="/dashboard_student">Dashboard</NavLink>
+                  <NavLink className="nav-link" to="/dashboard_student">Dashboard</NavLink>
                 </li>
 
                 <li className="nav-item">
@@ -64,62 +91,40 @@ const Dashboard_Student = () => {
           </div>
         </nav>
 
-        <video src="/image/Hogwart_tour.mkv" autoPlay loop muted>Hogwart Tour</video>
+        <video src="/image/Hogwart_tour.mkv" autoPlay loop muted>Hogwart Tour</video>.
 
         <div className="container px-4 py-5" id="featured-3">
-          <h2 className="pb-2 border-bottom">Quick Links</h2>
+          <h2 className="pb-2 border-bottom">{studentPerformence.courseName}</h2>
           <div className="row g-4 py-5 row-cols-1 row-cols-lg-3">
-
             <div className="feature col">
               <div className="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-                <img className="feature_au" src="image/course_directry.png" alt="Course Directry" />
+                <img className="feature_au" src="image/Attendance.png" alt="Course Directry" />
               </div>
-              <h3 className="fs-2 text-body-emphasis">Course Directory</h3>
-              <p>Details about all of the course which are running in Ahmedabad University</p>
-              <NavLink to="/course_directory" className="icon-link">More Details</NavLink>
+              <h3 className="fs-2 text-body-emphasis">Attendance: {studentPerformence.attendance}</h3>
+              <p>If you have query related attendance, then contact to this course's professor</p>
             </div>
-
             <div className="feature col">
               <div className="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-                <img className="feature_au" src="image/academic_performance.png" alt="Acedamic Performance" />
+                <img className="feature_au" src="image/Marks.png" alt="Course Directry" />
               </div>
-              <h3 className="fs-2 text-body-emphasis">Academic Performance & Attendance</h3>
-              <p>Student can see their grow here.</p>
-              <NavLink to="/student_courses" className="icon-link"> More Details</NavLink>
-            </div>
-
-            <div className="feature col">
-              <div className="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-                <img src="image/course_registration.png" alt="Course Registration" className="feature_au" />
-              </div>
-              <h3 className="fs-2 text-body-emphasis">Course Registration</h3>
-              <p>Registration related all details are here. </p>
-              <NavLink to="/course_registration" className="icon-link"> More Details</NavLink>
-            </div>
-
-            <div className="feature col">
-              <div className="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-                <img src="image/reset_password.png" alt="Reset Password" className="feature_au" />
-              </div>
-              <h3 className="fs-2 text-body-emphasis">Reset Password</h3>
-              <p>If you have to change your AURIS Password, then go ahed.</p>
-              <NavLink to="/forgot_password" className="icon-link"> More Details</NavLink>
+              <h3 className="fs-2 text-body-emphasis">Marks: {studentPerformence.marks}</h3>
+              <p>If you have query related marks, then contact to this course's professor</p>
             </div>
           </div>
         </div>
 
         <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-          <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Ahmedabad University, Inc</p>
+          <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwarts School, Inc</p>
           <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"></NavLink>
           <ul className="nav col-md-4 justify-content-end">
             <li className="nav-item"><NavLink to="/" className="nav-link px-2 text-body-secondary">Home</NavLink></li>
             <li className="nav-item"><NavLink to="/" className="nav-link px-2 text-body-secondary">About</NavLink></li>
           </ul>
         </footer>
-
       </div>
+
     </Layout>
   )
 }
 
-export default Dashboard_Student
+export default Attendance_Marks;

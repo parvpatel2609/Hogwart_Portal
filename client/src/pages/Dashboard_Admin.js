@@ -48,7 +48,7 @@ const Dashboard_Admin = () => {
                                 </li>
 
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" aria-current="page" to="/">Events</NavLink>
+                                    <NavLink className="nav-link" aria-current="page" to="/event">Events</NavLink>
                                 </li>
                             </ul>
 

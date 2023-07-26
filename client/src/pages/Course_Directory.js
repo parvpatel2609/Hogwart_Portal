@@ -4,11 +4,12 @@ import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/auth';
 
 
 const Course_Directory = () => {
     const [course, setCourse] = useState([]);
-    const [auth, setAuth] = useState("");
+    const [auth, setAuth] = useAuth();
 
     const navigate = useNavigate();
 
@@ -42,26 +43,6 @@ const Course_Directory = () => {
         getCourse();
     }, []);
 
-
-    //get auth details
-    const getAuth = async () => {
-        try {
-            const { user } = JSON.parse(localStorage.getItem("auth"));
-            if (user.role === "Admin") {
-                setAuth("Admin");
-            }
-        }
-        catch (error) {
-            console.log(error);
-            toast.error("Something went wrong");
-        }
-    }
-
-    useEffect(() => {
-        getAuth();
-    }, []);
-
-
     //handleAddnewcourse function to add new course
     const handleAddnewcourse = (e) => {
         e.preventDefault();
@@ -78,22 +59,73 @@ const Course_Directory = () => {
     return (
         <Layout title={"Course Directory-Hogwart Portal"}>
             <div>
-                <nav className="navbar navbar-expand-lg bg-body-tertiary">
+                <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
                     <div className="container-fluid">
-                        <NavLink className="navbar-brand" id="logo" to="/">
+                        <NavLink className="navbar-brand" id="logo">
                             <img src="/image/hogwart_school_logo.png" alt="Hogwart School Logo" />
                         </NavLink>
+
+                        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span className="navbar-toggler-icon" />
+                        </button>
+
+                        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+
+                            {
+                                auth?.user?.role === "Student" ?
+                                    (
+                                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link" to="/dashboard_student">Dashboard</NavLink>
+                                            </li>
+                                        </ul>
+                                    ) :
+                                    (
+                                        <>
+                                        </>
+                                    )
+                            }
+
+                            {
+                                auth?.user?.role === "Professor" ?
+                                    (
+                                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link" to="/dashboard_professor">Dashboard</NavLink>
+                                            </li>
+                                        </ul>
+                                    ) :
+                                    (
+                                        <>
+                                        </>
+                                    )
+                            }
+
+                            {
+                                auth?.user?.role === "Admin" ?
+                                    (
+                                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link" to="/dashboard_admin">Dashboard</NavLink>
+                                            </li>
+                                        </ul>
+                                    ) :
+                                    (
+                                        <>
+                                        </>
+                                    )
+                            }
+
+                            <ul className="navbar-nav ml-auto">
+                                <li className="nav-item">
+                                    <button onClick={handleLogout} className="btn btn-light btn-outline-danger">Logout</button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </nav>
 
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <button onClick={handleLogout} className="btn btn-light btn-outline-danger">Logout</button>
-                        </li>
-                    </ul>
-                </div>
-
+                <video src="/image/Hogwart_tour.mkv" autoPlay loop muted>Hogwart Tour</video>
 
                 <div className="container">
 
@@ -119,7 +151,7 @@ const Course_Directory = () => {
                     </div>
 
                     {
-                        auth === "Admin" ?
+                        auth.user.role === "Admin" ?
                             (
                                 <>
                                     <button onClick={handleAddnewcourse} class="btn btn-primary m-3">Add new Course</button>

@@ -81,11 +81,11 @@ export const studentEnrollController = async (req, res) => {
                             marks: 0
                         });
                     }
-                    
+
                     // Save the updated grade document
                     grade.save();
                 }).then(updatedGrade => {
-                    console.log('Student added successfully:');
+                    // console.log('Student added successfully:');
                 })
                 .catch(error => {
                     console.error('Error adding student:', error);
@@ -130,23 +130,152 @@ export const getStudentDetailsController = async (req, res) => {
 
         const f5 = await professorModel.findOne({ col_email: req.body.col_email });
 
-        console.log("faculty id:" + f5._id);
-        // console.log("Course id:" + req.body.id);
+        const pop = await gradeModel.findOne({ course_id: req.body.id }).populate("students_enroll.student_id");
 
-        const student_enroll = await studentModel.find({ course: req.body.id });
+        // let stu_enroll_grade = [];
+
+        // for(const item of pop.students_enroll){
+        //     const student5 = await gradeModel.findById(item.student_id);
+        //     stu_enroll_grade.push(student5);
+        // }
 
         res.status(201).send({
             success: true,
             message: "Students which are enroll in course are sended",
-            student_enroll
+            student_enroll: pop
         });
 
-    } 
+    }
     catch (error) {
         console.log(error);
         res.status(500).send({
             success: false,
             message: "Error in fetching students in particular course",
+            error
+        });
+    }
+}
+
+
+//post method of updating attendence from professor side
+export const updateAttendenceController = async (req, res) => {
+    try {
+        //validation
+        if (!req.body.id) {
+            return res.send({ message: "Student id is Required" });
+        }
+        if (!req.body.course_id) {
+            return res.send({ message: "Course id is Required" });
+        }
+
+        const grade = await gradeModel.findOne({ course_id: req.body.course_id });
+
+        // Find the index of the student in the students_enroll array
+        const studentIndex = grade.students_enroll.findIndex(student => student.student_id.toString() === req.body.id);
+
+        if (studentIndex === -1) {
+            res.status(402).send({
+                success: false,
+                message: "Student not found in enrolled student list!"
+            })
+        }
+
+        // Update the attendance of student
+        grade.students_enroll[studentIndex].Attendence = grade.students_enroll[studentIndex].Attendence + 1;
+
+        await grade.save();
+
+        res.status(201).send({
+            success: true,
+            message: "Student attendence are updated",
+            student_enroll: grade
+        });
+
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Error in updating students attendence in course",
+            error
+        });
+    }
+}
+
+
+//post method of updating marks of student from professor side
+export const updateMarksController = async (req, res) => {
+    try {
+        //validation
+        if (!req.body.id) {
+            return res.send({ message: "Student id is Required" });
+        }
+        if (!req.body.marks) {
+            return res.send({ message: "Student marks is Required as a input" });
+        }
+        if (!req.body.course_id) {
+            return res.send({ message: "Course id is Required" });
+        }
+
+        const grade = await gradeModel.findOne({ course_id: req.body.course_id });
+
+        // Find the index of the student in the students_enroll array
+        const studentIndex = grade.students_enroll.findIndex(student => student.student_id.toString() === req.body.id);
+
+        if (studentIndex === -1) {
+            res.status(402).send({
+                success: false,
+                message: "Student not found in enrolled student list!"
+            })
+        }
+
+        //update the marks of student
+        grade.students_enroll[studentIndex].marks = req.body.marks;
+
+        await grade.save();
+
+        res.status(201).send({
+            success: true,
+            message: "Student marks are updated",
+            student_enroll: grade
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Error in updating students marks in course",
+            error
+        });
+    }
+}
+
+//post method for get Student attendance & marks from student side
+export const giveStudentAttendanceMarksController = async (req, res) => {
+    try {
+        //validation
+        if (!req.body.id) {
+            return res.send({ message: "Student id is Required" });
+        }
+        if (!req.body.course_id) {
+            return res.send({ message: "Course id is Required" });
+        }
+
+        const attendance_marks = await gradeModel.findOne({ course_id: req.body.course_id, "students_enroll.student_id": req.body.id}, {"students_enroll.$": 1}).populate("course_id");
+
+        // const course = await courseModel.findById(req.body.course_id);
+
+        res.status(201).send({
+            success: true,
+            message: "Student attendance & marks are send",
+            attendance_marks
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Error in getting student attendance & marks in course",
             error
         });
     }

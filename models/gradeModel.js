@@ -11,7 +11,7 @@ const gradeSchema = new mongoose.Schema({
     },
     course_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Course",
+        ref: "courses",
         required: true
     },
     count: {
@@ -22,7 +22,7 @@ const gradeSchema = new mongoose.Schema({
         {
             student_id: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "Student"
+                ref: "students"
             },
             Attendence: {
                 type: Number,

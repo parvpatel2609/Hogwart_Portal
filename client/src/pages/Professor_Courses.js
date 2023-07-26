@@ -23,6 +23,7 @@ const Professor_Courses = () => {
       token: ""
     });
     localStorage.removeItem('auth');
+    localStorage.removeItem('course_id');
     navigate('/');
     toast.success("Logout Succefully");
   }
@@ -91,7 +92,7 @@ const Professor_Courses = () => {
         <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
 
           <div className="container-fluid">
-            <NavLink className="navbar-brand" id="logo" to="/">
+            <NavLink className="navbar-brand" id="logo">
               <img src="/image/hogwart_school_logo.png" alt="Hogwart School Logo" />
             </NavLink>
 
@@ -102,7 +103,7 @@ const Professor_Courses = () => {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <NavLink className="nav-link active" aria-current="page" to="/dashboard_professor">Dashboard</NavLink>
+                  <NavLink className="nav-link" aria-current="page" to="/dashboard_professor">Dashboard</NavLink>
                 </li>
 
                 <li className="nav-item">

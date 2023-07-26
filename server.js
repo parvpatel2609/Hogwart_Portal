@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
 import courseRoutes from "./routes/courseRoutes.js";
 import gradeRoutes from './routes/gradeRoutes.js';
+import eventRoutes from './routes/eventRoutes.js';
 import cors from "cors";
 
 //configure env 
@@ -29,6 +30,7 @@ app.use(morgan("dev"));
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/grade", gradeRoutes);
+app.use("/api/v1/event", eventRoutes);
 
 
 

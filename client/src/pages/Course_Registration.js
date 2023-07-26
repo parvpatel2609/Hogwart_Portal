@@ -16,8 +16,6 @@ const Course_Registration = () => {
 
     const navigate = useNavigate();
 
-
-
     //function for handlelogout 
     const handleLogout = () => {
         setAuth({
@@ -115,7 +113,7 @@ const Course_Registration = () => {
     //add new course handleAddCourseInRegistration
     const handleAddCourseInRegistration = async (id) => {
         try {
-            console.log(id);
+            // console.log(id);
             const { user } = JSON.parse(localStorage.getItem("auth"));
             const col_email = user.col_email;
             // console.log(col_email);
@@ -194,13 +192,12 @@ const Course_Registration = () => {
                                 ))}
                             </table>
 
-
-
                             <div className="row mb-3 mb-sm-4 ">
                                 <div className="col-12 text-center mt-3">
                                     <h2>Course Directory</h2>
                                 </div>
                             </div>
+
                             <div className="row g-4">
                                 {course.map(co => (
                                     <div className="col-sm-6 col-lg-4">

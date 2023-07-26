@@ -21,6 +21,7 @@ const Dashboard_Professor = () => {
             token: ""
         });
         localStorage.removeItem('auth');
+        localStorage.removeItem('course_id');
         navigate('/');
         toast.success("Logout Succefully");
     }
@@ -87,7 +88,7 @@ const Dashboard_Professor = () => {
                                 </li>
 
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" aria-current="page" to="/">Events</NavLink>
+                                    <NavLink className="nav-link" aria-current="page" to="/event">Events</NavLink>
                                 </li>
                             </ul>
 

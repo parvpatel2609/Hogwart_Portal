@@ -21,6 +21,7 @@ const Course_Student_Details = () => {
       token: ""
     });
     localStorage.removeItem('auth');
+    localStorage.removeItem('course_id');
     navigate('/');
     toast.success("Logout Succefully");
   }
@@ -38,11 +39,8 @@ const Course_Student_Details = () => {
 
       if (res.data) {
         console.log(res.data);
-        setStudents(res.data.student_enroll);
-        localStorage.removeItem("course_id");
+        setStudents(res.data.student_enroll.students_enroll);
       }
-
-
     }
     catch (error) {
       console.log(error);
@@ -53,6 +51,30 @@ const Course_Student_Details = () => {
   useEffect(() => {
     getStudentEnroll();
   }, []);
+
+
+  //method to handleAttendence
+  const handleAttendence = async () => {
+    try {
+      navigate("/update_attendence");
+    }
+    catch (error) {
+      console.log(error);
+      toast.error("Page Not Found");
+    }
+  }
+
+  //method to handleMarks
+  const handleMarks = async () => {
+    try {
+      navigate("/update_marks");
+    }
+    catch (error) {
+      console.log(error);
+      toast.error("Page Not Found");
+    }
+  }
+
 
 
   return (
@@ -96,23 +118,41 @@ const Course_Student_Details = () => {
               <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Email id</th>
+                <th scope="col">Present</th>
+                <th scope="col">Marks</th>
               </tr>
             </thead>
             {students.map(stu => (
               <tbody>
                 <tr>
                   <td>
-                    {stu.name}
+                    {stu.student_id.name}
                   </td>
                   <td>
-                    {stu.col_email}
+                    {stu.student_id.col_email}
+                  </td>
+                  <td>
+                    {stu.Attendence}
+                  </td>
+                  <td>
+                    {stu.marks}
                   </td>
                 </tr>
               </tbody>
             ))}
           </table>
+          <button onClick={handleAttendence} style={{ width: "fit-content" }} class="btn btn-primary m-3">Update Attendence</button>
+          <button onClick={handleMarks} style={{ width: "fit-content" }} class="btn btn-primary m-3">Update Marks</button>
         </div>
 
+        <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+          <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwarts School, Inc</p>
+          <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"></NavLink>
+          <ul className="nav col-md-4 justify-content-end">
+            <li className="nav-item"><NavLink to="/" className="nav-link px-2 text-body-secondary">Home</NavLink></li>
+            <li className="nav-item"><NavLink to="/" className="nav-link px-2 text-body-secondary">About</NavLink></li>
+          </ul>
+        </footer>
 
       </div>
     </Layout>
