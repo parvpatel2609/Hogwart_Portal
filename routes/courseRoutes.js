@@ -1,5 +1,5 @@
 import express from "express";
-import { addcourseController, getcourseRegistrationController, deleteCourseController, getCourseController, getRegistrationTimeController, registrationtimeController, addNewCourseStudentRegisterController } from "../controller/courseController.js";
+import { addcourseController, getcourseRegistrationController, deleteCourseController, getCourseController, getRegistrationTimeController, registrationtimeController, addNewCourseStudentRegisterController, dropCourseRegistrationController } from "../controller/courseController.js";
 import { isAdmin, isProfessor, isStudent, requireSignIn } from "../middlewares/authMiddleware.js";
 
 
@@ -35,6 +35,9 @@ router.post("/get_register_course", requireSignIn, isStudent, getcourseRegistrat
 
 //add new course in register 
 router.post("/add_course_student_register", requireSignIn, isStudent, addNewCourseStudentRegisterController);
+
+//drop course in register
+router.post("/drop_course_registration", requireSignIn, isStudent, dropCourseRegistrationController);
 
 
 //export router
