@@ -226,6 +226,7 @@ export const getcourseRegistrationController = async (req, res) => {
 //post method to add new course in student course register || Student
 export const addNewCourseStudentRegisterController = async (req, res) => {
     try {
+        //validation
         if (!req.body.col_email) {
             return res.send({ message: "College email id is Required to course registration" });
         }
@@ -269,6 +270,39 @@ export const addNewCourseStudentRegisterController = async (req, res) => {
         res.status(500).send({
             success: false,
             message: "Error in adding new course in register courses array in registration from studentside",
+            error
+        });
+    }
+}
+
+//post method to drop course in student course register || student
+export const dropCourseRegistrationController = async (req, res) => {
+    try {
+        //validation
+        if (!req.body.col_email) {
+            return res.send({ message: "College email id is Required to course registration" });
+        }
+        if (!req.body.id) {
+            return res.send({ message: "Course ID is Required to drop course registration" });
+        }
+
+        //finding student
+        const stu8 = await studentModel.findOneAndUpdate({ col_email: req.body.col_email }, {$pull: {course: req.body.id}});
+        stu8.save();
+
+        const d = await studentModel.findOne({col_email: req.body.col_email});
+
+        res.status(201).send({
+            success: true,
+            message: "Course is droped in your course registration",
+            course: d.course
+        });
+    } 
+    catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Error in droping course in register courses array in registration from studentside",
             error
         });
     }

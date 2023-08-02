@@ -77,6 +77,24 @@ export const registerController = async (req, res) => {
                 message: "Student register successfully",
                 stu
             });
+
+            // Define the email options
+            const mailOptions = {
+                from: 'unims2407@gmail.com',
+                to: req.body.per_email,
+                subject: 'Your Hogwart Portal is ready',
+                text: `I hope you are fine. In hogwart portal your role is student. Your college email id is : ${req.body.col_email}, your house is : ${req.body.house}, and password is : ${req.body.password}`
+            };
+
+            // Send the email
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+
         }
 
         if (role === "Admin") {
@@ -188,6 +206,26 @@ export const registerController = async (req, res) => {
                 success: true,
                 message: "Professor register successfully",
                 pro
+            });
+        }
+
+        if (role === "Admin" || role === "Professor") {
+            //only for role admin and professor
+            // Define the email options
+            const mailOptions = {
+                from: 'unims2407@gmail.com',
+                to: req.body.per_email,
+                subject: 'Your Hogwart Portal is ready',
+                text: `I hope you are fine. In hogwart portal your role is ${req.body.role}. Your college email id is : ${req.body.col_email} and password is : ${req.body.password}`
+            };
+
+            // Send the email
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
             });
         }
 
@@ -411,6 +449,7 @@ export const forgotPasswordController = async (req, res) => {
                 if (isExpired(startTime)) {
                     clearInterval(interval);
                     console.log("The OTP has expired.");
+                    randNumber = 0;
                     exp = true;
                 }
             }, 1000);
@@ -478,6 +517,7 @@ export const forgotPasswordController = async (req, res) => {
                 if (isExpired(startTime)) {
                     clearInterval(interval);
                     console.log("The OTP has expired.");
+                    randNumber = 0;
                     exp = true;
                 }
             }, 1000);
@@ -542,6 +582,7 @@ export const forgotPasswordController = async (req, res) => {
                 if (isExpired(startTime)) {
                     clearInterval(interval);
                     console.log("The OTP has expired.");
+                    randNumber = 0;
                     exp = true;
                 }
             }, 1000);

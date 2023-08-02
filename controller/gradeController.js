@@ -157,7 +157,7 @@ export const getStudentDetailsController = async (req, res) => {
 }
 
 
-//post method of updating attendence from professor side
+//post method of updating (increasing) attendence from professor side
 export const updateAttendenceController = async (req, res) => {
     try {
         //validation
@@ -180,7 +180,7 @@ export const updateAttendenceController = async (req, res) => {
             })
         }
 
-        // Update the attendance of student
+        // Update (increase) the attendance of student
         grade.students_enroll[studentIndex].Attendence = grade.students_enroll[studentIndex].Attendence + 1;
 
         await grade.save();
@@ -261,7 +261,7 @@ export const giveStudentAttendanceMarksController = async (req, res) => {
             return res.send({ message: "Course id is Required" });
         }
 
-        const attendance_marks = await gradeModel.findOne({ course_id: req.body.course_id, "students_enroll.student_id": req.body.id}, {"students_enroll.$": 1}).populate("course_id");
+        const attendance_marks = await gradeModel.findOne({ course_id: req.body.course_id, "students_enroll.student_id": req.body.id }, { "students_enroll.$": 1 }).populate("course_id");
 
         // const course = await courseModel.findById(req.body.course_id);
 
@@ -276,6 +276,60 @@ export const giveStudentAttendanceMarksController = async (req, res) => {
         res.status(500).send({
             success: false,
             message: "Error in getting student attendance & marks in course",
+            error
+        });
+    }
+}
+
+//post method updating (decreasing) attendance from professor side
+export const decreasingAttendanceController = async (req, res) => {
+    try {
+        //validation
+        if (!req.body.id) {
+            return res.send({ message: "Student id is Required" });
+        }
+        if (!req.body.course_id) {
+            return res.send({ message: "Course id is Required" });
+        }
+
+        const grade = await gradeModel.findOne({ course_id: req.body.course_id });
+
+        // Find the index of the student in the students_enroll array
+        const studentIndex = grade.students_enroll.findIndex(student => student.student_id.toString() === req.body.id);
+
+        if (studentIndex === -1) {
+            res.status(402).send({
+                success: false,
+                message: "Student not found in enrolled student list!"
+            })
+        }
+
+        // Update (decrease) the attendance of student
+        if (grade.students_enroll[studentIndex].Attendence > 0) {
+            grade.students_enroll[studentIndex].Attendence = grade.students_enroll[studentIndex].Attendence - 1;
+
+            await grade.save();
+
+            res.status(201).send({
+                success: true,
+                message: "Student attendence are updated",
+                student_enroll: grade
+            });
+
+        }
+        else{
+            res.status(201).send({
+                success: true,
+                message: "Student attendence isn't in negative",
+                student_enroll: grade
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Error in updating students attendence in course",
             error
         });
     }

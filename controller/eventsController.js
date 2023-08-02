@@ -2,7 +2,8 @@ import adminModel from "../models/adminModel.js";
 import eventModel from "../models/eventModel.js";
 import professorModel from "../models/professorModel.js";
 import studentModel from "../models/studentModel.js";
-
+import { transporter } from "./mailSender.js"
+import cron from "node-cron";
 
 //post method only for admin to add new events
 export const addEventController = async (req, res) => {
@@ -151,18 +152,18 @@ export const detailsParticipateController = async (req, res) => {
 
         let details = [];
 
-        for(const item of event9.participate){
+        for (const item of event9.participate) {
             const stu = await studentModel.findById(item);
             const pro = await professorModel.findById(item);
             const ad = await adminModel.findById(item);
 
-            if(stu){
+            if (stu) {
                 details.push(stu);
             }
-            if(pro){
+            if (pro) {
                 details.push(pro);
             }
-            if(ad){
+            if (ad) {
                 details.push(ad);
             }
         }
@@ -182,3 +183,80 @@ export const detailsParticipateController = async (req, res) => {
         });
     }
 }
+
+
+
+//reminder of event 
+// Function to send the reminder email
+async function sendReminderEmail(event, user) {
+
+    // console.log("sendReminder Event :" + event);
+
+    const eve = await eventModel.findById(event);
+
+    // console.log("send Event :" + eve);
+    // console.log("send Event :" + event.name);
+    // console.log("send Event :" + event.date);
+
+
+    const mailOptions = {
+        from: "unims2407@gmail.com",
+        to: user.col_email,
+        subject: `Reminder: Event - ${eve.name}`,
+        text: `Dear participants,\n\nThis is a reminder for the event "${eve.name}" happening on "${eve.date}". Please be prepared to attend the event.\n\nBest regards,\nHogwarts Portal`,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log(`Reminder email sent for event ${event.name}`);
+    } catch (error) {
+        console.error(`Error sending reminder email for event ${event.name}:`, error);
+    }
+}
+
+// Function to check for events and send reminder emails
+async function checkAndSendReminders() {
+    const currentTime = new Date();
+    const oneHourBefore = new Date(currentTime.getTime() + 60 * 60 * 1000);
+
+    try {
+        const events = await eventModel.find({
+            date: { $gt: currentTime, $lte: oneHourBefore },
+        });
+
+        // console.log("Event :" + events);
+
+        if (events) {
+            for (const ev of events) {
+                for (const event of ev.participate) {
+                    const stu10 = await studentModel.findById(event);
+                    // console.log("Student :" + stu10);
+                    const prof = await professorModel.findById(event);
+                    const adm = await adminModel.findById(event);
+
+                    if (stu10 !== null) {
+                        sendReminderEmail(ev, stu10);
+                    }
+
+                    if (prof !== null) {
+                        sendReminderEmail(event, prof);
+                    }
+
+                    if (adm !== null) {
+                        sendReminderEmail(event, adm);
+                    }
+
+                };
+            }
+        }
+    } catch (error) {
+        console.error("Error fetching events for reminders:", error);
+    }
+}
+
+
+// Schedule the task to run every hour
+cron.schedule("0 * * * *", async () => {
+    console.log("Running event reminder job...");
+    await checkAndSendReminders();
+});
