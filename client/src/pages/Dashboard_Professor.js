@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Layout from '../components/Layout/Layout'
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/auth';
@@ -31,7 +31,7 @@ const Dashboard_Professor = () => {
     const fetchData = async () => {
         try {
             const response = await axios.get(`/api/v1/course/check_registration_time_on_or_not`);
-            console.log(response);
+            // console.log(response);
 
             if (response.data.d) {
                 const startTime = new Date(response.data.d.startTime);
@@ -46,17 +46,18 @@ const Dashboard_Professor = () => {
                 const isRegistrationOpen =
                     currentDateTime >= startTime && currentDateTime <= endTime;
 
-                console.log(isRegistrationOpen);
+                // console.log(isRegistrationOpen);
 
                 setRegistrationOpen(isRegistrationOpen);
             }
             else {
-                console.log("Registration is closed");
+                // console.log("Registration is closed");
                 // toast.error("Registration is closed");
             }
         }
         catch (error) {
-            console.error('Error fetching date and time range:', error);
+            // console.error('Error fetching date and time range:', error);
+            toast.error("Error fetching date and time range of course registration");
         }
     };
 
@@ -72,7 +73,7 @@ const Dashboard_Professor = () => {
             <div>
                 <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
 
-                    <div className="container-fluid">
+                    <div className="container-fluid" id="mynavbar">
                         <NavLink className="navbar-brand" id="logo" to="/">
                             <img src="/image/hogwart_school_logo.png" alt="Hogwart School Logo" />
                         </NavLink>
@@ -84,15 +85,19 @@ const Dashboard_Professor = () => {
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li className="nav-item">
-                                    <NavLink className="nav-link active" aria-current="page" to="/dashboard_professor">Dashboard</NavLink>
+                                    <NavLink className="nav-link active" style={{borderTop: "2px solid black"}} aria-current="page" to="/dashboard_professor">Dashboard</NavLink>
                                 </li>
 
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" aria-current="page" to="/event">Events</NavLink>
+                                    <NavLink className="nav-link" aria-current="page" to="/event">Event</NavLink>
                                 </li>
                             </ul>
 
                             <ul className="navbar-nav ml-auto">
+                                <li className="nav-item">
+                                    <h4 style={{ marginRight: "10px", marginTop: "5px" }}>{auth.user.name}</h4>
+                                </li>
+
                                 <li className="nav-item">
                                     <button onClick={handleLogout} className="btn btn-light btn-outline-danger">Logout</button>
                                 </li>
@@ -147,13 +152,12 @@ const Dashboard_Professor = () => {
                 </div>
 
                 <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-                    <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Ahmedabad University, Inc</p>
+                    <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwart School, Inc</p>
                     <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                     </NavLink>
 
                     <ul className="nav col-md-4 justify-content-end">
-                        <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary">Home</NavLink></li>
-                        <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary">About</NavLink></li>
+                        <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary" to="/about">About</NavLink></li>
                     </ul>
 
                 </footer>

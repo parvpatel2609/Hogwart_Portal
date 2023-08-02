@@ -9,8 +9,7 @@ import { useAuth } from '../context/auth';
 const Event_Participate_Details = () => {
 
     const [auth, setAuth] = useAuth();
-    const [participate, setParticipate] = useState([]);
-    const [name, setName] = useState("");
+    const [eventDetails, setEventDetails] = useState({name: "", participate: []})
 
     const navigate = useNavigate();
 
@@ -33,10 +32,9 @@ const Event_Participate_Details = () => {
         const res = await axios.post("/api/v1/event/details_participate", { event_id });
 
         if (res.data) {
-            console.log(res.data);
+            // console.log(res.data);
             toast.success(res.data.message);
-            setParticipate(res.data.details);
-            setName(res.data.name);
+            setEventDetails({name: res.data.name, participate: res.data.details});
         }
     }
 
@@ -48,7 +46,7 @@ const Event_Participate_Details = () => {
         <Layout title={"Event Details of Paticipate"}>
             <div>
                 <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
-                    <div className="container-fluid">
+                    <div className="container-fluid" id="mynavbar">
                         <NavLink className="navbar-brand" id="logo">
                             <img src="/image/hogwart_school_logo.png" alt="Hogwart School Logo" />
                         </NavLink>
@@ -65,6 +63,9 @@ const Event_Participate_Details = () => {
                                             <li className="nav-item">
                                                 <NavLink className="nav-link" to="/dashboard_admin">Dashboard</NavLink>
                                             </li>
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link" to="/event">Event</NavLink>
+                                            </li>
                                         </ul>
                                     ) :
                                     (
@@ -74,6 +75,10 @@ const Event_Participate_Details = () => {
                             }
 
                             <ul className="navbar-nav ml-auto">
+                                <li className="nav-item">
+                                    <h4 style={{ marginRight: "10px", marginTop: "5px" }}>{auth.user.name}</h4>
+                                </li>
+
                                 <li className="nav-item">
                                     <button onClick={handleLogout} className="btn btn-light btn-outline-danger">Logout</button>
                                 </li>
@@ -88,7 +93,7 @@ const Event_Participate_Details = () => {
 
                     <div className="row mb-3 mb-sm-4 ">
                         <div className="col-12 text-center mt-3">
-                            <h2>Event: {name}</h2>
+                            <h2>Event: {eventDetails.name}</h2>
                         </div>
                     </div>
 
@@ -100,7 +105,7 @@ const Event_Participate_Details = () => {
                                 <th scope="col">Email ID</th>
                             </tr>
                         </thead>
-                        {participate.map(p => (
+                        {eventDetails.participate.map(p => (
                             <tbody>
                                 <tr>
                                     <td>
@@ -126,8 +131,7 @@ const Event_Participate_Details = () => {
                 </NavLink>
 
                 <ul className="nav col-md-4 justify-content-end">
-                    <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary">Home</NavLink></li>
-                    <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary">About</NavLink></li>
+                    <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary" to="/about">About</NavLink></li>
                 </ul>
 
             </footer>

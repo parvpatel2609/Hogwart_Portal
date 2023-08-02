@@ -44,7 +44,7 @@ const Attendance_Marks = () => {
       }
     }
     catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error("Something went wrong in getting student attendance & marks of course");
     }
   }
@@ -56,11 +56,10 @@ const Attendance_Marks = () => {
 
   return (
     <Layout title={"Student Attendance & Marks"}>
-      // <h1> {studentPerformence.marks} </h1>
       <div>
         <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
 
-          <div className="container-fluid">
+          <div className="container-fluid" id="mynavbar">
             <NavLink className="navbar-brand" id="logo" to="/">
               <img src="/image/hogwart_school_logo.png" alt="Hogwart School Logo" />
             </NavLink>
@@ -83,6 +82,10 @@ const Attendance_Marks = () => {
 
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
+                  <h4 style={{ marginRight: "10px", marginTop: "5px" }}>{auth.user.name}</h4>
+                </li>
+
+                <li className="nav-item">
                   <button onClick={handleLogout} className="btn btn-light btn-outline-danger">Logout</button>
                 </li>
               </ul>
@@ -96,6 +99,7 @@ const Attendance_Marks = () => {
         <div className="container px-4 py-5" id="featured-3">
           <h2 className="pb-2 border-bottom">{studentPerformence.courseName}</h2>
           <div className="row g-4 py-5 row-cols-1 row-cols-lg-3">
+
             <div className="feature col">
               <div className="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
                 <img className="feature_au" src="image/Attendance.png" alt="Course Directry" />
@@ -103,6 +107,7 @@ const Attendance_Marks = () => {
               <h3 className="fs-2 text-body-emphasis">Attendance: {studentPerformence.attendance}</h3>
               <p>If you have query related attendance, then contact to this course's professor</p>
             </div>
+
             <div className="feature col">
               <div className="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
                 <img className="feature_au" src="image/Marks.png" alt="Course Directry" />
@@ -114,12 +119,14 @@ const Attendance_Marks = () => {
         </div>
 
         <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-          <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwarts School, Inc</p>
-          <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"></NavLink>
+          <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwart School, Inc</p>
+          <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+          </NavLink>
+
           <ul className="nav col-md-4 justify-content-end">
-            <li className="nav-item"><NavLink to="/" className="nav-link px-2 text-body-secondary">Home</NavLink></li>
-            <li className="nav-item"><NavLink to="/" className="nav-link px-2 text-body-secondary">About</NavLink></li>
+            <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary" to="/about">About</NavLink></li>
           </ul>
+
         </footer>
       </div>
 

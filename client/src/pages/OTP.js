@@ -10,10 +10,9 @@ const OTP = () => {
 
     const navigator = useNavigate();
 
-
     const handleSubmitOtp = async (e) => {
         e.preventDefault();
-        console.log(otp);
+        // console.log(otp);
         const res = await axios.post(`/api/v1/auth/compareOtp`, {otp});
         if(res.data.success == true){
             toast.success(res.data.message);

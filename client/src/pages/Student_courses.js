@@ -34,12 +34,12 @@ const Student_courses = () => {
 
             const res = await axios.post(`/api/v1/course/get_register_course`, { col_email });
             if (res) {
-                console.log(res.data);
+                // console.log(res.data);
                 setRegisterCourse(res.data.course);
             }
         }
         catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error("Something went wrong in getting student register course details");
         }
     }
@@ -52,10 +52,10 @@ const Student_courses = () => {
     //onclick of Attendance & marks
     const handleAttendanceandMarks = async (id) => {
         localStorage.setItem('stu_course_id', JSON.stringify(id));
-        if(id!=null){
+        if (id != null) {
             navigate('/student_course_attendance_marks');
         }
-        else{
+        else {
             toast.error("Something went wrong. Please try after some time");
         }
     }
@@ -67,7 +67,7 @@ const Student_courses = () => {
             <div>
                 <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
 
-                    <div className="container-fluid">
+                    <div className="container-fluid" id="mynavbar">
 
                         <NavLink className="navbar-brand" id="logo" to="/">
                             <img src="/image/hogwart_school_logo.png" alt="Hogwart School Logo" />
@@ -85,11 +85,15 @@ const Student_courses = () => {
                                 </li>
 
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" to="/">Event</NavLink>
+                                    <NavLink className="nav-link" to="/event">Event</NavLink>
                                 </li>
                             </ul>
 
                             <ul className="navbar-nav ml-auto">
+                                <li className="nav-item">
+                                    <h4 style={{ marginRight: "10px", marginTop: "5px" }}>{auth.user.name}</h4>
+                                </li>
+
                                 <li className="nav-item">
                                     <button onClick={handleLogout} className="btn btn-light btn-outline-danger">Logout</button>
                                 </li>
@@ -106,7 +110,7 @@ const Student_courses = () => {
 
                     <div className="row">
                         {register.map(r => (
-                            <div className="col-sm-6 col-lg-4">
+                            <div className="col-sm-6 col-lg-4 mb-4">
                                 {/* Card Start */}
                                 <div className="card card-body shadow p-4 h-100">
                                     <div className="icon-lg bg-primary bg-opacity-10 text-primary rounded-circle mb-4"><i className="bi bi-lightning-fill fs-5" /></div>
@@ -115,7 +119,7 @@ const Student_courses = () => {
                                     <h6> Faculty: {r.faculty} </h6>
                                     <p> {r.description} </p>
                                     {/* <p> {r._id } </p> */}
-                                    <button onClick={() => {handleAttendanceandMarks(r._id)}} style={{ width: "fit-content" }} class="btn btn-primary">Attendance & Marks</button>
+                                    <button onClick={() => { handleAttendanceandMarks(r._id) }} style={{ width: "fit-content" }} class="btn btn-primary">Attendance & Marks</button>
                                 </div>
                                 {/* Card END */}
                             </div>
@@ -124,12 +128,14 @@ const Student_courses = () => {
                 </div>
 
                 <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-                    <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwarts School, Inc</p>
-                    <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"></NavLink>
+                    <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwart School, Inc</p>
+                    <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                    </NavLink>
+
                     <ul className="nav col-md-4 justify-content-end">
-                        <li className="nav-item"><NavLink to="/" className="nav-link px-2 text-body-secondary">Home</NavLink></li>
-                        <li className="nav-item"><NavLink to="/" className="nav-link px-2 text-body-secondary">About</NavLink></li>
+                        <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary" to="/about">About</NavLink></li>
                     </ul>
+
                 </footer>
             </div>
         </Layout>

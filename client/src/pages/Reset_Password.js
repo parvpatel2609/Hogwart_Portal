@@ -36,7 +36,7 @@ const Reset_Password = () => {
 
         } 
         catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error("Something went wrong" + error);
         }
     }
@@ -46,7 +46,7 @@ const Reset_Password = () => {
             <div>
 
                 <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
-                    <div className="container-fluid">
+                    <div className="container-fluid" id="mynavbar">
                         <a className="navbar-brand" id="logo">
                             <img src="/image/hogwart_school_logo.png" alt="University Logo" />
                         </a>

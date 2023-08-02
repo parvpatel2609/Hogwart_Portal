@@ -38,13 +38,13 @@ const Professor_Courses = () => {
       const res = await axios.post("/api/v1/grade/professor_courses", { col_email });
       // console.log(res);
       if (res) {
-        console.log(res.data);
+        // console.log(res.data);
         setCourse(res.data.course);
       }
 
     }
     catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error("Something went wrong for getting professor courses");
     }
 
@@ -59,7 +59,7 @@ const Professor_Courses = () => {
   //more details button of particilar 
   const handleMoreDetails = async (id) => {
     try {
-      console.log(id);
+      // console.log(id);
       const { user } = JSON.parse(localStorage.getItem("auth"));
       const col_email = user.col_email;
       localStorage.setItem('course_id', JSON.stringify(id));
@@ -69,8 +69,8 @@ const Professor_Courses = () => {
       const res = await axios.post("/api/v1/grade/enroll_student", { col_email, id });
 
       if (res.data.success) {
-        console.log(res.data.stu_enroll);
-        toast.success(res.data.message);  
+        // console.log(res.data.stu_enroll);
+        toast.success(res.data.message);
         navigate("/course_student_details");
       }
 
@@ -79,7 +79,7 @@ const Professor_Courses = () => {
       }
     }
     catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(`Something went wrong ${error}`);
     }
   }
@@ -91,7 +91,7 @@ const Professor_Courses = () => {
       <div>
         <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
 
-          <div className="container-fluid">
+          <div className="container-fluid" id="mynavbar">
             <NavLink className="navbar-brand" id="logo">
               <img src="/image/hogwart_school_logo.png" alt="Hogwart School Logo" />
             </NavLink>
@@ -107,11 +107,15 @@ const Professor_Courses = () => {
                 </li>
 
                 <li className="nav-item">
-                  <NavLink className="nav-link" aria-current="page" to="/">Events</NavLink>
+                  <NavLink className="nav-link" aria-current="page" to="/event">Event</NavLink>
                 </li>
               </ul>
 
               <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <h4 style={{ marginRight: "10px", marginTop: "5px" }}>{auth.user.name}</h4>
+                </li>
+
                 <li className="nav-item">
                   <button onClick={handleLogout} className="btn btn-light btn-outline-danger">Logout</button>
                 </li>
@@ -146,13 +150,12 @@ const Professor_Courses = () => {
         </div>
 
         <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-          <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Ahmedabad University, Inc</p>
+          <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwart School, Inc</p>
           <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
           </NavLink>
 
           <ul className="nav col-md-4 justify-content-end">
-            <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary">Home</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary">About</NavLink></li>
+            <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary" to="/about">About</NavLink></li>
           </ul>
 
         </footer>

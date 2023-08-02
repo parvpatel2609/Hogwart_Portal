@@ -1,6 +1,8 @@
 function getRandomString() {
     const strings = ['Gryffindor', 'Ravenclaw', 'Hufflepuff', 'Slytherin'];
-    const randomIndex = Math.floor(Math.random() * strings.length);
+    // console.log("String length " + strings.length);
+    const randomIndex = Math.floor( 0 + Math.random() * strings.length);
+    // console.log(randomIndex);
     return strings[randomIndex];
 }
 

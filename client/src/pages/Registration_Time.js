@@ -23,7 +23,7 @@ const Registration_Time = () => {
                 const res = await axios.post(`/api/v1/course/registration_time`, {term, startTime, endTime});
                 if(res.data.success){
                     toast.success(res.data.message);
-                    console.log(res.data);
+                    // console.log(res.data);
                     navigate("/dashboard_admin");
                 }
                 else{
@@ -32,7 +32,7 @@ const Registration_Time = () => {
             }
         } 
         catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error(`Something went wrong ${error}`);
         }
     }
@@ -125,8 +125,8 @@ const Registration_Time = () => {
                     </div>
                 </div>
 
-            </div >
-        </Layout >
+            </div>
+        </Layout>
     )
 }
 

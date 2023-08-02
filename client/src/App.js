@@ -25,6 +25,7 @@ import Event from './pages/Event';
 import Add_New_Event from './pages/Add_New_Event';
 import Delete_Event from './pages/Delete_Event';
 import Event_Participate_Details from './pages/Event_Participate_Details';
+import About_Us from './pages/About_Us';
 
 
 
@@ -139,22 +140,25 @@ function App() {
         <Route path='/event' element={<Event />} />
 
         //add new event only through admin
-        <Route path='/add_new_event' element={<PrivateRoute_Admin/>}>
+        <Route path='/add_new_event' element={<PrivateRoute_Admin />}>
           <Route path="" element={<Add_New_Event />} />
         </Route>
 
         //delete evemt only through admin
-        <Route path='/delete_event' element={<PrivateRoute_Admin/>}>
+        <Route path='/delete_event' element={<PrivateRoute_Admin />}>
           <Route path="" element={<Delete_Event />} />
         </Route>
 
         //evemt participate details only through admin
-        <Route path='/event_participate_details' element={<PrivateRoute_Admin/>}>
+        <Route path='/event_participate_details' element={<PrivateRoute_Admin />}>
           <Route path="" element={<Event_Participate_Details />} />
         </Route>
 
         // Page not found Route
         <Route path='*' element={<Pagenotfound />} />
+
+        //About Page
+        <Route path='/about' element={<About_Us />} />
 
       </Routes>
     </>

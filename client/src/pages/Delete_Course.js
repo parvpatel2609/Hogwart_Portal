@@ -34,7 +34,7 @@ const Delete_Course = () => {
       }
     }
     catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error("Something went wrong in getting all course details");
     }
   };
@@ -48,14 +48,14 @@ const Delete_Course = () => {
     try {
       // console.log(id);
       const res = await axios.delete(`/api/v1/course/delete_course/${id}`);
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.success) {
         toast.success(res.data.message);
         window.location.reload();
       }
     }
     catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(`Something went wrong + ${error}`);
     }
   }
@@ -64,7 +64,7 @@ const Delete_Course = () => {
     <Layout title={"Delete Course-Hogwart Portal"}>
       <div>
         <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
-          <div className="container-fluid">
+          <div className="container-fluid" id="mynavbar">
             <NavLink className="navbar-brand" id="logo">
               <img src="/image/hogwart_school_logo.png" alt="Hogwart School Logo" />
             </NavLink>
@@ -76,6 +76,9 @@ const Delete_Course = () => {
                     <li className="nav-item">
                       <NavLink className="nav-link" to="/dashboard_admin">Dashboard</NavLink>
                     </li>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/event">Event</NavLink>
+                    </li>
                   </ul>
                 ) :
                 (
@@ -85,6 +88,10 @@ const Delete_Course = () => {
             }
 
             <ul className="navbar-nav ml-auto">
+              <li className="nav-item">
+                <h4 style={{ marginRight: "10px", marginTop: "5px" }}>{auth.user.name}</h4>
+              </li>
+
               <li className="nav-item">
                 <button onClick={handleLogout} className="btn btn-light btn-outline-danger">Logout</button>
               </li>
@@ -123,12 +130,14 @@ const Delete_Course = () => {
         </div>
 
         <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-          <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwarts School, Inc</p>
-          <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"></NavLink>
+          <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwart School, Inc</p>
+          <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+          </NavLink>
+
           <ul className="nav col-md-4 justify-content-end">
-            <li className="nav-item"><NavLink to="/" className="nav-link px-2 text-body-secondary">Home</NavLink></li>
-            <li className="nav-item"><NavLink to="/" className="nav-link px-2 text-body-secondary">About</NavLink></li>
+            <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary" to="/about">About</NavLink></li>
           </ul>
+
         </footer>
       </div>
     </Layout>

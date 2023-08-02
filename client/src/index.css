@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Suranna&display=swap');
 
-
 *{
   margin: 0;
   padding: 0;
@@ -9,15 +8,13 @@
 
 /* font-family: 'Special Elite', cursive; */
 /* font-family: 'Suranna', serif; */
+/* font-family: 'Pirata One', cursive; */
 
 /* Footer CSS */
 .footer{
-  
-  
   font-family: 'Special Elite', cursive;
   font-size: larger;
 }
-
 
 .navbar{
   position: fixed;
@@ -57,4 +54,9 @@ video{
 
 .sign{
   height: 280px;
+}
+
+#mynavbar{
+  font-size: 23px;
+  font-family: 'Pirata One', cursive; 
 }

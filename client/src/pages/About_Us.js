@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react';
 import Layout from './../components/Layout/Layout';
 import { NavLink } from 'react-router-dom';
-import axios from 'axios';
-import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/auth';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
+const About_Us = () => {
 
-const Course_Directory = () => {
-    const [course, setCourse] = useState([]);
     const [auth, setAuth] = useAuth();
 
     const navigate = useNavigate();
@@ -25,40 +23,11 @@ const Course_Directory = () => {
         toast.success("Logout Succefully");
     }
 
-    //get all courses
-    const getCourse = async () => {
-        try {
-            const { data } = await axios.get("/api/v1/course/courser_directory");
-            if (data.success) {
-                setCourse(data.course);
-            }
-        }
-        catch (error) {
-            // console.log(error);
-            toast.error("Something went wrong in getting all course details");
-        }
-    };
-
-    useEffect(() => {
-        getCourse();
-    }, []);
-
-    //handleAddnewcourse function to add new course
-    const handleAddnewcourse = (e) => {
-        e.preventDefault();
-        navigate("/add_new_course");
-    }
-
-
-    //handleDeletecourse function for delete course 
-    const handleDelete = (e) => {
-        e.preventDefault();
-        navigate("/delete_course");
-    }
-
     return (
-        <Layout title={"Course Directory-Hogwart Portal"}>
+        <Layout title={"About -Hogwarts Portal"}>
+
             <div>
+
                 <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
                     <div className="container-fluid" id="mynavbar">
                         <NavLink className="navbar-brand" id="logo">
@@ -140,60 +109,29 @@ const Course_Directory = () => {
 
                 <video src="/image/Hogwart_tour.mkv" autoPlay loop muted>Hogwart Tour</video>
 
-                <div className="container">
-
-                    <div className="row mb-3 mb-sm-4 ">
-                        <div className="col-12 text-center mt-3">
-                            <h2>Course Directory</h2>
+                <div className="album py-5 bg-light">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-4">
+                                <div className="card mb-4 box-shadow">
+                                    <img className="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Thumbnail [100%x225]"
+                                        style={{ height: 450, width: '100%', display: 'block' }}
+                                        src="/image/Parv.jpeg" data-holder-rendered="true" />
+                                    <div className="card-body">
+                                        <h2 className="card-text" style={{ fontFamily: "'Pirata One', cursive" }}>Parv Patel</h2>
+                                        <p className="card-text">Email id: parvpatel2609@gmail.com</p>
+                                        <p className="card-text">Contact: +91 9974707548</p>
+                                        <p className="card-text">LinkedIn: <NavLink to="https://www.linkedin.com/in/parv-patel-348a34225/"> linkedin.com/in/parv-patel-348a34225/ </NavLink></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="row g-4">
-                        {course.map(co => (
-                            <div className="col-sm-6 col-lg-4">
-                                {/* Card Start */}
-                                <div className="card card-body shadow p-4 h-100">
-                                    <div className="icon-lg bg-primary bg-opacity-10 text-primary rounded-circle mb-4"><i className="bi bi-lightning-fill fs-5" /></div>
-                                    <h5> {co.course_name} </h5>
-                                    <h6> Credit: {co.credit}  </h6>
-                                    <h6> Faculty: {co.faculty} </h6>
-                                    <p> {co.description} </p>
-                                </div>
-                                {/* Card END */}
-                            </div>
-                        ))}
-                    </div>
-
-                    {
-                        auth.user.role === "Admin" ?
-                            (
-                                <>
-                                    <button onClick={handleAddnewcourse} class="btn btn-primary m-3">Add new Course</button>
-                                    <button onClick={handleDelete} class="btn btn-primary m-3">Delete Course</button>
-                                </>
-                            ) :
-                            (
-                                <>
-
-                                </>
-                            )
-                    }
-
                 </div>
-
-                <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-                    <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwart School, Inc</p>
-                    <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-                    </NavLink>
-
-                    <ul className="nav col-md-4 justify-content-end">
-                        <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary" to="/about">About</NavLink></li>
-                    </ul>
-
-                </footer>
-
             </div>
+
         </Layout>
     )
 }
 
-export default Course_Directory;
+export default About_Us;

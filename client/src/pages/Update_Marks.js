@@ -39,12 +39,12 @@ const Update_Marks = () => {
             const res = await axios.post("/api/v1/grade/get_student_details", { col_email, id });
 
             if (res.data) {
-                console.log(res.data.student_enroll);
+                // console.log(res.data.student_enroll);
                 setStudents(res.data.student_enroll.students_enroll);
             }
         }
         catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error("Something went wrong in getting student enroll details from database");
         }
     }
@@ -84,8 +84,8 @@ const Update_Marks = () => {
             }
         }
         catch (error) {
-            console.log(error);
-            toast.error(`Something went wrong ${error}`);
+            // console.log(error);
+            toast.error(`Something went wrong to updating marks ${error}`);
         }
     }
 
@@ -93,9 +93,9 @@ const Update_Marks = () => {
     return (
         <Layout title={"Update Marks"}>
             <div>
-                <nav className="navbar navbar-expand-lg bg-body-tertiary">
+                <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary">
 
-                    <div className="container-fluid">
+                    <div className="container-fluid" id="mynavbar">
                         <NavLink className="navbar-brand" id="logo">
                             <img src="/image/hogwart_school_logo.png" alt="Hogwart School Logo" />
                         </NavLink>
@@ -111,11 +111,15 @@ const Update_Marks = () => {
                                 </li>
 
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" aria-current="page" to="/">Events</NavLink>
+                                    <NavLink className="nav-link" aria-current="page" to="/event">Event</NavLink>
                                 </li>
                             </ul>
 
                             <ul className="navbar-nav ml-auto">
+                                <li className="nav-item">
+                                    <h4 style={{ marginRight: "10px", marginTop: "5px" }}>{auth.user.name}</h4>
+                                </li>
+
                                 <li className="nav-item">
                                     <button onClick={handleLogout} className="btn btn-light btn-outline-danger">Logout</button>
                                 </li>
@@ -123,6 +127,8 @@ const Update_Marks = () => {
                         </div>
                     </div>
                 </nav>
+
+                <video src="/image/Hogwart_tour.mkv" autoPlay loop muted>Hogwart Tour</video>
 
                 <div className="container">
                     <h2 className="pb-2 border-bottom" style={{ textAlign: 'center' }}> Enrolled Students Detail </h2>
@@ -163,12 +169,14 @@ const Update_Marks = () => {
                 </div>
 
                 <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-                    <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwarts School, Inc</p>
-                    <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"></NavLink>
+                    <p className="col-md-4 mb-0 text-body-secondary">© 2023 Company: Hogwart School, Inc</p>
+                    <NavLink to="/" className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                    </NavLink>
+
                     <ul className="nav col-md-4 justify-content-end">
-                        <li className="nav-item"><NavLink to="/" className="nav-link px-2 text-body-secondary">Home</NavLink></li>
-                        <li className="nav-item"><NavLink to="/" className="nav-link px-2 text-body-secondary">About</NavLink></li>
+                        <li className="nav-item"><NavLink className="nav-link px-2 text-body-secondary" to="/about">About</NavLink></li>
                     </ul>
+
                 </footer>
 
             </div>

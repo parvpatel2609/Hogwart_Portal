@@ -31,8 +31,8 @@ const Add_New_Course = () => {
             }   
         } 
         catch (error) {
-            console.log(error);
-            toast.error("Something went wrong");
+            // console.log(error);
+            toast.error("Something went wrong to add new course");
         }
 
         

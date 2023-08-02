@@ -58,7 +58,7 @@ const Sign_in = () => {
 
                     if (res.data.success) {
                         toast.success(res.data.message);
-                        console.log("admin");
+                        // console.log("admin");
                         setAuth({
                             ...auth,
                             user: res.data.user,
@@ -78,7 +78,7 @@ const Sign_in = () => {
 
                     if (res.data.success) {
                         toast.success(res.data.message);
-                        console.log("professor");
+                        // console.log("professor");
                         setAuth({
                             ...auth,
                             user: res.data.user,
@@ -95,7 +95,7 @@ const Sign_in = () => {
             }
 
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error("Something went wrong");
         }
     }

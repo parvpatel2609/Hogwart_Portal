@@ -35,7 +35,7 @@ const Add_New_Event = () => {
             }
         }
         catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error("Something went wrong to add new event");
         }
     }

@@ -29,7 +29,7 @@ const Register = () => {
       else {
         if (role === "Student") {
           const house = getRandomString();
-          console.log(house);
+          // console.log(house);
           const res = await axios.post(`/api/v1/auth/register`,
             { role, house, name, per_email, number, birth_date, col_email, password });
 
@@ -71,8 +71,8 @@ const Register = () => {
       }
 
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong.")
+      // console.log(error);
+      toast.error("Something went wrong for new reister")
     }
   }
 
