@@ -1,10 +1,13 @@
 # Hogwarts Portal
 ### Description
-* This project includes three leading roles: Students, Professors, and Admins.
+
+- The project include three leading roles are:
+  - Student
+  - Professor
+  - Admin
 * Students can take their choice of courses in course registration time, their registered course attendance & marks, and participate in different events by filling Google form link which given on their portal.
 * Professors can update enrolled students' attendance & marks and participate in events with students.
 * Admins have complete control of the course registration timings and the addition of new events.
-* Before one hour ago of any event start, event reminder is also sent in mail.
 
 ### Example
 - **Student**:
@@ -16,6 +19,11 @@
   - Password: professor
 
 ## Features
+
+### Common Features
+  - The admin adds a newly enrolled student or professor to the Hogwarts portal, and an email is sent to their given personal email about the Hogwarts portal role, email id of the school, and password.
+  - If a student enrolled, then which house is allocated to them is also maintained in the email
+  - Before one hour ago of any event start, event reminder is also sent in mail.
 
 ### Admin Features
   - Set Course Registration time
