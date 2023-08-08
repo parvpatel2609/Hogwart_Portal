@@ -21,8 +21,8 @@
 ## Features
 
 ### Common Features
-  - The admin adds a newly enrolled student or professor to the Hogwarts portal, and an email is sent to their given personal email about the Hogwarts portal role, email id of the school, and password.
-  - If a student enrolled, then which house is allocated to them is also maintained in the email
+  - Newly enrolled student or professor to the Hogwarts portal will get email from admin about their personal email, the Hogwarts portal role, school name and password. 
+  - Student will notify which house is allocated to them after enrolled.
   - Before one hour ago of any event start, event reminder is also sent in mail.
 
 ### Admin Features
