@@ -32,7 +32,7 @@ const Dashboard_Admin = () => {
 
                     <div className="container-fluid"  id="mynavbar">
 
-                        <NavLink className="navbar-brand" id="logo" to="/">
+                        <NavLink className="navbar-brand" id="logo">
                             <img src="/image/hogwart_school_logo.png" alt="Hogwart School Logo" />
                         </NavLink>
 
