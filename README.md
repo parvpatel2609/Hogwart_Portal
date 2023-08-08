@@ -38,3 +38,14 @@
 - Frontend: React Js
 - Backend: Node Js
 - Database: MongoDB
+
+## Screenshots
+
+- Student Dashboard
+![Student Dashboard_Hogwarts Portal](https://github.com/parvpatel2609/Hogwart_Portal/assets/101592578/c14c4753-87ca-4751-bd86-2d9fbee24c9d)
+
+- Professor Dashboard
+![Professor Dashboard_Hogwarts Portal](https://github.com/parvpatel2609/Hogwart_Portal/assets/101592578/dcb3c2b0-1fbb-4cb8-bd54-10ab5142131f)
+
+- Admin Dashboard
+![Admin Dashboard_Hogwarts Portal](https://github.com/parvpatel2609/Hogwart_Portal/assets/101592578/4defedb7-b71e-4518-8a9c-3a53f47b0149)
